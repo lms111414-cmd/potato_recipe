@@ -36,6 +36,8 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('home');
   // null = 전체 보기 (초기 상태)
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
+  // 검색어 (요리명/설명/무드 키워드 실시간 필터)
+  const [searchQuery, setSearchQuery] = useState('');
   // 선택된 레시피가 있으면 상세 화면(isDetail) 상태로 전환
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   // 미니게임 성공 화면(isGameSuccess) 상태 - 사진 교체 권한을 얻은 레시피
@@ -53,14 +55,28 @@ export default function Home() {
     ? recipes.find((r) => r.id === challengeRecipeId) ?? null
     : null;
 
-  // 선택된 무드가 없으면 전체, 있으면 해당 무드만 필터링
-  const visibleRecipes = selectedMood
-    ? recipes.filter((recipe) => recipe.mood === selectedMood)
-    : recipes;
+  // 무드 + 검색어 동시 필터링
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const visibleRecipes = recipes.filter((recipe) => {
+    if (selectedMood && recipe.mood !== selectedMood) return false;
+    if (!normalizedQuery) return true;
+    const haystack =
+      `${recipe.title} ${recipe.description} ${MOOD_LABELS[recipe.mood]}`.toLowerCase();
+    return haystack.includes(normalizedQuery);
+  });
 
   // 같은 칩을 다시 누르면 전체 보기로 토글
   const handleMoodSelect = (mood: Mood) => {
     setSelectedMood((prev) => (prev === mood ? null : mood));
+  };
+
+  // 탭 전환: '홈'으로 이동(또는 홈 재선택) 시 무드/검색 필터를 초기화
+  const handleTabChange = (tab: TabId) => {
+    if (tab === 'home') {
+      setSelectedMood(null);
+      setSearchQuery('');
+    }
+    setActiveTab(tab);
   };
 
   // 홈 상세에서 "기록 도전하기": 도전 레시피 지정 + 상세 닫고 게임 탭으로 이동
@@ -135,11 +151,36 @@ export default function Home() {
             </div>
 
             {/* ================= [감성 인사 문구] ================= */}
-            <div className="mb-5 px-1">
+            <div className="mb-4 px-1">
               <p className={`text-[13px] tracking-wide mb-1 transition-colors duration-1000 ${isNightMood ? 'text-stone-300' : 'text-stone-400'}`}>오늘의 감자 일기</p>
               <h2 className={`text-[20px] leading-snug font-semibold tracking-wide transition-colors duration-1000 ${isNightMood ? 'text-stone-50' : 'text-stone-800'}`}>
                 오늘 당신의 날씨나<br />마음은 어떤가요?
               </h2>
+            </div>
+
+            {/* ================= [검색창] ================= */}
+            <div className="mb-6">
+              <div className="flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm border border-amber-100/80 px-4 py-3 shadow-[0_4px_14px_rgba(120,90,40,0.05)] focus-within:ring-2 focus-within:ring-amber-300/70 transition-all">
+                <span className="text-stone-400 text-[15px] leading-none">🔍</span>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="무드나 요리 이름 검색..."
+                  className="flex-1 bg-transparent text-[14px] text-stone-700 placeholder-stone-400 focus:outline-none font-serif"
+                  aria-label="레시피 검색"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="text-stone-300 hover:text-stone-500 text-[15px] leading-none transition-colors"
+                    aria-label="검색어 지우기"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* ================= [무드 선택 칩 버튼] ================= */}
@@ -188,6 +229,23 @@ export default function Home() {
                 ))}
               </AnimatePresence>
             </motion.div>
+
+            {/* 검색/필터 결과 없음 */}
+            {visibleRecipes.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col items-center text-center mt-12 px-6 select-none"
+              >
+                <span className="text-3xl mb-2 opacity-70">🥔</span>
+                <p className={`text-[14px] ${isNightMood ? 'text-stone-300' : 'text-stone-500'}`}>
+                  검색 결과가 없어요
+                </p>
+                <p className="text-[12px] text-stone-400 mt-1">
+                  다른 키워드나 무드로 찾아보세요
+                </p>
+              </motion.div>
+            )}
           </motion.div>
         )}
 
@@ -222,7 +280,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* ================= [하단 네비게이션 바] ================= */}
-      <BottomNav active={activeTab} onChange={setActiveTab} />
+      <BottomNav active={activeTab} onChange={handleTabChange} />
 
       {/* ================= [상세 화면 전환 (isDetail)] ================= */}
       <AnimatePresence>

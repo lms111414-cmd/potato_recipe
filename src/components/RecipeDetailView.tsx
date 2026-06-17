@@ -25,7 +25,7 @@ export function RecipeDetailView({
       exit={{ x: '100%' }}
       transition={{ type: 'tween', duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="max-w-md mx-auto px-5 pt-5 pb-32 min-h-screen">
+      <div className="max-w-md mx-auto px-5 pt-5 pb-16 min-h-screen">
         {/* 뒤로가기 */}
         <button
           onClick={onBack}
@@ -69,22 +69,19 @@ export function RecipeDetailView({
           <p className="text-amber-900/90 font-serif leading-[2] text-[15px] tracking-wide whitespace-pre-line">
             {recipe.story}
           </p>
-        </motion.div>
-      </div>
 
-      {/* 하단 고정 버튼 영역 (타이머 제거, 기록 도전하기 단독 배치) */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md px-5 pb-7 pt-6 bg-gradient-to-t from-[#FDFBF7] via-[#FDFBF7]/95 to-transparent z-10">
-        {/* 기록 도전하기 (게임 탭 이동) */}
-        <motion.button
-          type="button"
-          whileTap={{ scale: 0.97 }}
-          onClick={() => onChallenge(recipe)}
-          className="w-full rounded-2xl py-4 text-[15px] font-semibold text-white bg-amber-800 hover:bg-amber-900 shadow-md shadow-amber-900/15 transition-colors"
-        >
-          {hasRecord
-            ? '다시 기록 도전하기 🎮'
-            : '이 레시피 기록 도전하기 🎮'}
-        </motion.button>
+          {/* 기록 도전하기 (정적 레이아웃 — 글 흐름에 자연스럽게 포함되어 스크롤 시 함께 이동) */}
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onChallenge(recipe)}
+            className="mt-10 w-full rounded-2xl py-4 text-[15px] font-semibold text-white bg-amber-800 hover:bg-amber-900 shadow-md shadow-amber-900/15 transition-colors"
+          >
+            {hasRecord
+              ? '다시 기록 도전하기 🎮'
+              : '이 레시피 기록 도전하기 🎮'}
+          </motion.button>
+        </motion.div>
       </div>
     </motion.div>
   );
