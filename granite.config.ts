@@ -2,7 +2,7 @@ import { defineConfig } from '@apps-in-toss/web-framework/config';
 
 export default defineConfig({
   // 앱인토스 콘솔에 등록한 appName과 동일하게 맞춰주세요.
-  appName: 'potato-recipe',
+  appName: 'potatomap',
   brand: {
     displayName: '감자 일기',
     primaryColor: '#8B5E34',

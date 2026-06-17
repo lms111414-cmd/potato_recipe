@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { type Recipe, MOOD_LABELS } from '@/data/recipes';
+import { RecipeStepSlider } from './RecipeStepSlider';
 
 export interface RecipeDetailViewProps {
   recipe: Recipe;
@@ -65,10 +66,8 @@ export function RecipeDetailView({
           {/* 구분선 */}
           <div className="w-12 h-px bg-amber-300/70 mb-7" />
 
-          {/* 에세이형 조리 스토리 */}
-          <p className="text-amber-900/90 font-serif leading-[2] text-[15px] tracking-wide whitespace-pre-line">
-            {recipe.story}
-          </p>
+          {/* 단계별 카드 슬라이드 — 긴 줄글을 한 단계씩 넘겨보며 읽도록 */}
+          <RecipeStepSlider story={recipe.story} />
 
           {/* 기록 도전하기 (정적 레이아웃 — 글 흐름에 자연스럽게 포함되어 스크롤 시 함께 이동) */}
           <motion.button
