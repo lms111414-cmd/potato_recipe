@@ -5,8 +5,21 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
-import { getRecipeById } from '@/data/recipes'
+import type { GetStaticPaths, GetStaticProps } from 'next'
+import { getRecipeById, recipes } from '@/data/recipes'
 import { Timer } from '@/components/Timer'
+
+// 정적 export(output: 'export')를 위해 모든 레시피 경로를 미리 생성
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: recipes.map((recipe) => ({ params: { id: recipe.id } })),
+    fallback: false,
+  }
+}
+
+export const getStaticProps: GetStaticProps = () => {
+  return { props: {} }
+}
 
 export default function RecipeDetail() {
   const router = useRouter()

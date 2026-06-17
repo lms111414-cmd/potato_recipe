@@ -3,6 +3,10 @@ node_modules/
 dist/
 build/
 out/
+# 앱인토스 빌드 산출물/캐시
+.granite/
+*.ait
+tsconfig.tsbuildinfo
 *.log
 .DS_Store
 .env.local

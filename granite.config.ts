@@ -1,39 +1,23 @@
-export default {
-  name: 'potato-recipe',
-  displayName: '감자 일기',
-  description: '1인가구를 위한 감성 웰니스 레시피 미니앱',
-  version: '0.1.0',
+import { defineConfig } from '@apps-in-toss/web-framework/config';
 
-  // 앱인토스 플랫폼 설정
-  platform: {
-    ios: true,
-    android: true,
+export default defineConfig({
+  // 앱인토스 콘솔에 등록한 appName과 동일하게 맞춰주세요.
+  appName: 'potato-recipe',
+  brand: {
+    displayName: '감자 일기',
+    primaryColor: '#8B5E34',
+    // 콘솔에서 업로드한 아이콘 이미지 URL을 넣어주세요.
+    icon: '',
   },
-
-  // 빌드 설정
-  build: {
-    entry: 'src/pages/_app.tsx',
-    output: 'dist',
-    target: 'es2020',
-  },
-
-  // 권한 설정
   permissions: [],
-
-  // 네이티브 모듈
-  nativeModules: [],
-
-  // 화면 라우팅
-  screens: [
-    {
-      name: 'home',
-      path: '/',
-      component: 'src/pages/index.tsx',
+  web: {
+    host: 'localhost',
+    port: 3000,
+    commands: {
+      dev: 'next dev',
+      // Next.js 정적 export 결과물(out/)을 번들로 패키징합니다.
+      build: 'next build',
     },
-    {
-      name: 'recipe-detail',
-      path: '/recipe/:id',
-      component: 'src/pages/recipe/[id].tsx',
-    },
-  ],
-}
+  },
+  outdir: 'out',
+});
