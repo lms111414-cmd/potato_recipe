@@ -7,7 +7,7 @@ export default defineConfig({
     displayName: '감자 일기',
     primaryColor: '#8B5E34',
     // 콘솔에서 업로드한 아이콘 이미지 URL을 넣어주세요.
-    icon: '',
+    icon: 'https://static.toss.im/appsintoss/50957/124eb1d9-0b84-44d0-aadb-4e5355bda533.png',
   },
   permissions: [],
   web: {
