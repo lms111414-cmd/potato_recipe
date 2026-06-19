@@ -25,13 +25,14 @@ export function DiaryEditModal({ recipe, onSave, onClose }: DiaryEditModalProps)
       />
 
       <motion.div
-        className="relative w-full max-w-md bg-[#FDFBF7] rounded-t-[32px] sm:rounded-[32px] max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl border border-amber-100 font-serif px-6 pt-7 pb-[calc(2rem+env(safe-area-inset-bottom))]"
+        className="relative w-full max-w-md flex flex-col max-h-[85vh] bg-[#FDFBF7] rounded-t-[32px] sm:rounded-[32px] shadow-2xl border border-amber-100 font-serif px-6 pt-7 pb-[calc(1.5rem+env(safe-area-inset-bottom))] overflow-hidden"
         initial={{ y: 60, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 40, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       >
-        <div className="text-center mb-6">
+        {/* 고정 헤더 */}
+        <div className="shrink-0 text-center mb-5">
           <h1 className="text-[20px] font-bold text-amber-900 tracking-wide">
             ✏️ 내 일기 수정하기
           </h1>
@@ -40,6 +41,7 @@ export function DiaryEditModal({ recipe, onSave, onClose }: DiaryEditModalProps)
           </p>
         </div>
 
+        {/* 스크롤 본문 + 고정 푸터(폼 내부에서 분리 처리) */}
         <DiaryEntryForm
           initialImage={recipe.userImage}
           initialMemo={recipe.userMemo}
