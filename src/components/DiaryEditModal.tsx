@@ -25,7 +25,7 @@ export function DiaryEditModal({ recipe, onSave, onClose }: DiaryEditModalProps)
       />
 
       <motion.div
-        className="relative w-full max-w-md bg-[#FDFBF7] rounded-t-[32px] sm:rounded-[32px] max-h-[92vh] overflow-y-auto shadow-2xl border border-amber-100 font-serif px-6 pt-7 pb-8"
+        className="relative w-full max-w-md bg-[#FDFBF7] rounded-t-[32px] sm:rounded-[32px] max-h-[90vh] overflow-y-auto overscroll-contain shadow-2xl border border-amber-100 font-serif px-6 pt-7 pb-[calc(2rem+env(safe-area-inset-bottom))]"
         initial={{ y: 60, opacity: 0, scale: 0.98 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 40, opacity: 0 }}

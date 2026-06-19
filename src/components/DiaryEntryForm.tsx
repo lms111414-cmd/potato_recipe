@@ -55,26 +55,47 @@ export function DiaryEntryForm({
         onChange={handleFile}
         className="hidden"
       />
-      <button
-        type="button"
-        onClick={() => fileRef.current?.click()}
-        className="w-full aspect-[16/9] rounded-2xl border-2 border-dashed border-amber-200 bg-amber-50/40 flex flex-col items-center justify-center overflow-hidden mb-4 hover:bg-amber-50 transition-colors"
-      >
-        {image ? (
-          <img
-            src={image}
-            alt="업로드한 사진 미리보기"
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <>
-            <span className="text-3xl mb-1">📷</span>
-            <span className="text-[13px] text-amber-700 font-medium">
-              사진 올리기
-            </span>
-          </>
+      <div className="relative mb-4">
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          className="w-full aspect-[16/9] rounded-2xl border-2 border-dashed border-amber-200 bg-amber-50/40 flex flex-col items-center justify-center overflow-hidden hover:bg-amber-50 transition-colors"
+        >
+          {image ? (
+            <img
+              src={image}
+              alt="업로드한 사진 미리보기"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <>
+              <span className="text-3xl mb-1">📷</span>
+              <span className="text-[13px] text-amber-700 font-medium">
+                사진 올리기
+              </span>
+            </>
+          )}
+        </button>
+
+        {image && (
+          <button
+            type="button"
+            onClick={() => {
+              setImage(null);
+              if (fileRef.current) fileRef.current.value = '';
+            }}
+            className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-stone-900/55 backdrop-blur-sm px-3 py-1.5 text-[12px] font-medium text-white hover:bg-stone-900/75 transition-colors shadow-sm"
+          >
+            🗑️ 사진 삭제
+          </button>
         )}
-      </button>
+      </div>
+
+      {image && (
+        <p className="text-[12px] text-stone-400 mb-4 -mt-1 text-center">
+          사진을 다시 누르면 다른 사진으로 바꿀 수 있어요.
+        </p>
+      )}
 
       {/* 한 줄 메모 */}
       <input
